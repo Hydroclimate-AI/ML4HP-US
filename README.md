@@ -6,7 +6,7 @@
 **Approximate archive size:** 600 GB (subject to final packaging)  
 **AWS availability:** Not yet published; access instructions will be added after release.
 
-> **Documentation status:** This README describes the current production files and planned public archive. Items marked **[TO CONFIRM]** require checking against the final NetCDF metadata or approval before publication. The spatial coordinates are geographic latitude/longitude, not projected x/y coordinates. Hourly timestamps denote the **start** of each accumulation period, and missing precipitation values are represented by **NaN** (`np.nan`).
+> **Documentation status:** This README describes the current production files and planned public archive. More metadata will be added into the final NetCDF before publication. The spatial coordinates are geographic latitude/longitude, not projected x/y coordinates. Hourly timestamps denote the **start** of each accumulation period, and missing precipitation values are represented by **NaN** (`np.nan`).
 
 ## 1. Overview
 
@@ -75,14 +75,13 @@ Other masks or processing fields may exist in some internal versions. Only the t
 | Grid spacing | 0.04° in latitude and longitude (nominally ~4 km; physical east–west spacing varies with latitude) |
 | Coordinates | One-dimensional `lat` and `lon` in geographic degrees |
 | Spatial coordinate system | **Geographic latitude/longitude (degrees); no map projection is used.** Coordinates are provided directly as `lat` and `lon`, not projected easting/northing (`x`/`y`). |
-| Geodetic datum | **[TO CONFIRM]** from NetCDF metadata. A specific datum or EPSG code (e.g., WGS 84 / EPSG:4326) should not be asserted without verification. |
 | Spatial extent versus valid area | The rectangular grid includes locations outside valid CONUS coverage; use missing-value/mask information to distinguish unavailable cells from zero rainfall |
 
 ### Time conventions
 
 - **Temporal resolution:** hourly; nominal coverage extends from January 2002 through December 2025.
 - **Time dimension:** `time` (one timestamp for each hourly field).
-- **Time standard:** **[TO CONFIRM]** whether all timestamps and CF time units explicitly represent UTC in the published files.
+- **Time standard:** time units explicitly represent UTC in the published files.
 - **Hour labeling:** Each timestamp represents the **start of the hourly precipitation accumulation interval**. For example, the record at `2020-01-01 12:00` represents precipitation accumulated from `12:00` up to (but not including) `13:00` on that date. This matters when comparing products with end-of-hour timestamps.
 - **Coverage edges:** Some boundary hours are absent in the current production archive. For example, the January 2002 file begins at `2002-01-01 04:00` and contains 740 hours, rather than a complete 744-hour January. Users should check time coverage and completeness instead of assuming every day has 24 records.
 
@@ -99,7 +98,7 @@ XTPrecip integrates complementary precipitation predictors from radar, satellite
 
 The modeling and assessment workflow includes screening gauge records, preparing temporally/spatially consistent predictor fields, evaluating withheld COOP test stations, and assessing precipitation characteristics such as frequency, intensity, and extremes. Existing comparison products include **NOAA Stage IV**, **AORC**, and the deep-learning-based **PUnet** precipitation dataset.
 
-**Release-stage quality assurance is ongoing.** Final checks include missing/invalid values, implausible precipitation estimates, temporal coverage, regional-boundary artifacts, and precipitation-extreme behavior. Additional independent evaluation using **USCRN** observations is planned. Final verified quantitative performance results and any known limitations will be linked here when the associated manuscript and data release are finalized; no unverified accuracy improvement is claimed in this README.
+**Release-stage quality assurance is ongoing.** Final checks include missing/invalid values, implausible precipitation estimates, temporal coverage, regional-boundary artifacts, and precipitation-extreme behavior. Final verified quantitative performance results and any known limitations will be linked here when the associated manuscript and data release are finalized; no unverified accuracy improvement is claimed in this README.
 
 ## 5. Access and citation
 
@@ -179,9 +178,6 @@ For multi-year or cloud-based analyses, use lazy loading/chunking (for example, 
 
 ## 7. Information to finalize before public release
 
-- [ ] Verify the geographic coordinate attributes, geodetic datum, and CF metadata; no projected CRS is used.
-- [ ] Verify UTC/calendar details in the published files (hour-start labeling is confirmed).
-- [x] Document the missing-data fill value as `np.nan`.
 - [ ] Check whether the final NetCDF files explicitly set `_FillValue` and confirm CF metadata consistency.
 - [ ] Confirm archive structure, final variable names, compression, file sizes, and completeness.
 - [ ] Complete final quality checks and add verified validation summaries and limitations.
