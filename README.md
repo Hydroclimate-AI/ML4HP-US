@@ -6,7 +6,7 @@
 **Approximate archive size:** 600 GB (subject to final packaging)  
 **AWS availability:** Not yet published; access instructions will be added after release.
 
-> **Documentation status:** This README describes the current production files and planned public archive. Items marked **[TO CONFIRM]** require checking against the final NetCDF metadata or approval before publication. In particular, the geodetic datum and exact time-zone/calendar metadata still require verification. The spatial coordinates are geographic latitude/longitude, not projected x/y coordinates. Hourly timestamps denote the **start** of each accumulation period, and missing precipitation values are represented by **NaN** (`np.nan`).
+> **Documentation status:** This README describes the current production files and planned public archive. Items marked **[TO CONFIRM]** require checking against the final NetCDF metadata or approval before publication. The spatial coordinates are geographic latitude/longitude, not projected x/y coordinates. Hourly timestamps denote the **start** of each accumulation period, and missing precipitation values are represented by **NaN** (`np.nan`).
 
 ## 1. Overview
 
