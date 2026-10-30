@@ -14,7 +14,7 @@
 
 ML4HP-US is generated using **XTPrecip**, a multisource spatiotemporal deep-learning framework that integrates complementary information from ground-based radar precipitation estimates, satellite observations, atmospheric and land-surface reanalyses, and topographic data. The framework is trained using quality-controlled precipitation observations from NOAA Cooperative Observer Program (COOP) gauges. It combines CONUS-wide pretraining with regional fine-tuning across seven U.S. National Climate Assessment (NCA) regions to account for regional differences in precipitation characteristics.
 
-Independent evaluation against withheld rain gauges demonstrates substantial improvements in precipitation estimation accuracy compared with established precipitation products, including Stage IV, AORC, and PUnet.
+Independent evaluation against withheld rain gauges demonstrates substantial improvements in precipitation estimation accuracy compared with established precipitation products, such as Stage IV, AORC, and PUnet.
 
 ## Applications
 
