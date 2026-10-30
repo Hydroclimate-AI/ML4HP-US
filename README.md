@@ -188,5 +188,9 @@ For multi-year or cloud-based analyses, use lazy loading/chunking (for example, 
 
 ---
 
+*This README is a pre-release draft for supervisory review and the AWS Open Data Sponsorship application. It should be publicly posted only after the metadata marked for confirmation have been reviewed, or with those limitations transparently retained.*
+
+---
+
 *This README is a pre-release draft for supervisory review and the AWS Open Data Sponsorship application. It should be publicly posted only after the metadata marked for confirmation have been reviewed, or with those limitations transparently retained.*# ML4HP-US
 Dataset documentation and examples
