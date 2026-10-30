@@ -8,19 +8,34 @@
 
 > **Documentation status:** This README describes the current production files and planned public archive. More metadata will be added into the final NetCDF before publication. The spatial coordinates are geographic latitude/longitude, not projected x/y coordinates. Hourly timestamps denote the **start** of each accumulation period, and missing precipitation values are represented by **NaN** (`np.nan`).
 
-## 1. Overview
+## 1. Overview 
 
-**ML4HP-US** is a long-term, spatially continuous, hourly precipitation dataset developed for the contiguous United States using **XTPrecip**, a multi-source spatiotemporal deep-learning framework. XTPrecip combines information from ground-based radar, satellite observations, reanalysis/land-surface products, and terrain data, and is trained using quality-screened NOAA Cooperative Observer Program (COOP) hourly precipitation observations. The modeling strategy uses CONUS-wide pretraining followed by regional fine-tuning in seven National Climate Assessment (NCA) regions.
+**ML4HP-US (Machine Learning for High-Resolution Precipitation – United States)** is a long-term, spatially continuous, 4-km hourly precipitation dataset covering the contiguous United States (CONUS) from 2002 through 2025. Developed by the Hydroclimate Research Group at Auburn University with funding from the NOAA Climate Program Office, the 24-year archive contains more than 210,000 hourly precipitation fields and is designed to support future updates.
 
-ML4HP-US is designed to support:
+ML4HP-US is generated using **XTPrecip**, a multisource spatiotemporal deep-learning framework that integrates complementary information from ground-based radar precipitation estimates, satellite observations, atmospheric and land-surface reanalyses, and topographic data. The framework is trained using quality-controlled precipitation observations from NOAA Cooperative Observer Program (COOP) gauges. It combines CONUS-wide pretraining with regional fine-tuning across seven U.S. National Climate Assessment (NCA) regions to account for regional differences in precipitation characteristics.
 
-- Hydrologic and land-surface model forcing;
-- Flood and extreme-precipitation analysis;
-- Water-resources and climate variability research;
-- Assessments of radar, satellite, and reanalysis precipitation estimates; and
-- Machine-learning development, benchmarking, and downscaling applications.
+Independent evaluation against withheld rain gauges demonstrates substantial improvements in precipitation estimation accuracy compared with established precipitation products, including Stage IV, AORC, and PUnet.
 
-The currently prepared archive covers **2002–2025**, with one NetCDF file per calendar month. The archive is intended to be updated beyond 2025 after the initial public release.
+## Applications
+
+ML4HP-US is designed to support a broad range of scientific research and practical applications, including:
+
+- Climate and hydrology research, including precipitation variability and extremes;
+- Hydrologic, watershed, and land-surface modeling and prediction;
+- Flood and drought monitoring, modeling, and forecasting;
+- Water resources assessment and management;
+- Natural hazard risk assessment and management;
+- Climate risk management in agriculture, forestry, and related sectors;
+- Evaluation of radar, satellite, and reanalysis precipitation products; and
+- Machine-learning model development, training, benchmarking, and downscaling applications.
+
+## Data Availability
+
+The current ML4HP-US archive covers **2002–2025**, with precipitation data organized into monthly NetCDF files. The archive is approximately **576 GB**, with an estimated storage requirement of 600 GB for the initial release.
+
+The dataset is undergoing final evaluation and preparation for public release by the **end of 2026**, with plans for continued updates. We are pursuing public hosting through the **AWS Open Data Sponsorship Program** to facilitate open access, reproducible research, and scalable cloud-based analysis.
+
+Dataset access instructions, example Python workflows, and citation information will be provided as part of the public release.
 
 ## 2. Data format and organization
 
