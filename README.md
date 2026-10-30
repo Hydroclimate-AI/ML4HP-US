@@ -60,7 +60,7 @@ blended_generation/
 
 | Variable | Meaning | Units | Data type |
 | --- | --- | --- | --- |
-| `precip_raw` | XTPrecip-based blended precipitation estimate before the final intensity-scaling correction | mm h⁻¹ | `float32` |
+| `precip_raw` | XTPrecip-based blended precipitation estimate from the seven climate regions directly from model outputs | mm h⁻¹ | `float32` |
 | `precip_scaled` | Blended precipitation estimate after the intensity-scaling correction; intended primary precipitation field | mm h⁻¹ | `float32` |
 
 Other masks or processing fields may exist in some internal versions. Only the two precipitation fields above should be treated as the currently documented public variables until the final file schema is verified.
