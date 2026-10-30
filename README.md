@@ -12,14 +12,9 @@
 
 **ML4HP-US (Machine Learning for High-Resolution Precipitation – United States)** is a long-term, spatially continuous, 4-km hourly precipitation dataset covering the contiguous United States (CONUS) from 2002 through 2025. Developed by the Hydroclimate Research Group at Auburn University with funding from the NOAA Climate Program Office, the 24-year archive contains more than 210,000 hourly precipitation fields and is designed to support future updates.
 
-ML4HP-US is generated using **XTPrecip**, a multisource spatiotemporal deep-learning framework that integrates complementary information from ground-based radar precipitation estimates, satellite observations, atmospheric and land-surface reanalyses, and topographic data. The framework is trained using quality-controlled precipitation observations from NOAA Cooperative Observer Program (COOP) gauges. It combines CONUS-wide pretraining with regional fine-tuning across seven U.S. National Climate Assessment (NCA) regions to account for regional differences in precipitation characteristics.
+ML4HP-US is generated using **XTPrecip**, a multisource spatiotemporal deep-learning framework that integrates complementary information from ground-based radar precipitation estimates, satellite observations, atmospheric and land-surface reanalyses, and topographic data. The framework is trained using quality-controlled precipitation observations from NOAA Cooperative Observer Program (COOP) gauges. It combines CONUS-wide pretraining with regional fine-tuning across seven U.S. National Climate Assessment (NCA) regions to account for regional differences in precipitation characteristics. 
 
-Independent evaluation against withheld rain gauges demonstrates substantial improvements in precipitation estimation accuracy compared with established precipitation products, such as Stage IV, AORC, and PUnet.
-
-## Applications
-
-ML4HP-US is designed to support a broad range of scientific research and practical applications, including:
-
+ML4HP-US is designed to support a broad range of scientific research and practical applications, such as:
 - Climate and hydrology research, including precipitation variability and extremes;
 - Hydrologic, watershed, and land-surface modeling and prediction;
 - Flood and drought monitoring, modeling, and forecasting;
@@ -29,7 +24,7 @@ ML4HP-US is designed to support a broad range of scientific research and practic
 - Evaluation of radar, satellite, and reanalysis precipitation products; and
 - Machine-learning model development, training, benchmarking, and downscaling applications.
 
-## Data Availability
+Independent evaluation against withheld rain gauges demonstrates substantial improvements in precipitation estimation accuracy compared with established precipitation products, such as Stage IV, AORC, and PUnet.
 
 The current ML4HP-US archive covers **2002–2025**, with precipitation data organized into monthly NetCDF files. The archive is approximately **576 GB**, with an estimated storage requirement of 600 GB for the initial release.
 
