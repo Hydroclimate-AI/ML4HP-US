@@ -1,4 +1,4 @@
-# ML4HP-US: Machine Learning for Hourly Precipitation over the United States
+# ML4HP-US: A Multi-Source Deep Learning–Based 4-km Hourly Precipitation Dataset for the Contiguous United States
 
 **Status:** Pre-release; public release is planned by the end of 2026.  
 **Coverage:** Contiguous United States (CONUS) | nominal 4 km | hourly | 2002–2025  
@@ -6,7 +6,7 @@
 **Approximate archive size:** 600 GB (subject to final packaging)  
 **AWS availability:** Not yet published; access instructions will be added after release.
 
-> **Documentation status:** This README describes the current production files and planned public archive. Items marked **[TO CONFIRM]** require checking against the final NetCDF metadata or approval before publication. In particular, the coordinate reference system/datum, hourly timestamp labeling, and encoded missing-data value have not yet been verified.
+> **Documentation status:** This README describes the current production files and planned public archive. Items marked **[TO CONFIRM]** require checking against the final NetCDF metadata or approval before publication. In particular, the geodetic datum and exact time-zone/calendar metadata still require verification. The spatial coordinates are geographic latitude/longitude, not projected x/y coordinates. Hourly timestamps denote the **start** of each accumulation period, and missing precipitation values are represented by **NaN** (`np.nan`).
 
 ## 1. Overview
 
@@ -74,7 +74,8 @@ Other masks or processing fields may exist in some internal versions. Only the t
 | Longitude grid | 1,500 grid-cell centers, approximately 126.00°W to 66.04°W |
 | Grid spacing | 0.04° in latitude and longitude (nominally ~4 km; physical east–west spacing varies with latitude) |
 | Coordinates | One-dimensional `lat` and `lon` in geographic degrees |
-| Coordinate reference system / geodetic datum | **[TO CONFIRM]** from the final NetCDF geospatial metadata; do not assume an EPSG identifier without verification |
+| Spatial coordinate system | **Geographic latitude/longitude (degrees); no map projection is used.** Coordinates are provided directly as `lat` and `lon`, not projected easting/northing (`x`/`y`). |
+| Geodetic datum | **[TO CONFIRM]** from NetCDF metadata. A specific datum or EPSG code (e.g., WGS 84 / EPSG:4326) should not be asserted without verification. |
 | Spatial extent versus valid area | The rectangular grid includes locations outside valid CONUS coverage; use missing-value/mask information to distinguish unavailable cells from zero rainfall |
 
 ### Time conventions
@@ -82,15 +83,15 @@ Other masks or processing fields may exist in some internal versions. Only the t
 - **Temporal resolution:** hourly; nominal coverage extends from January 2002 through December 2025.
 - **Time dimension:** `time` (one timestamp for each hourly field).
 - **Time standard:** **[TO CONFIRM]** whether all timestamps and CF time units explicitly represent UTC in the published files.
-- **Hour labeling:** **[TO CONFIRM]** whether a timestamp refers to the start or end of the 1-hour precipitation interval. This is important for comparisons with other products and for daily aggregation.
+- **Hour labeling:** Each timestamp represents the **start of the hourly precipitation accumulation interval**. For example, the record at `2020-01-01 12:00` represents precipitation accumulated from `12:00` up to (but not including) `13:00` on that date. This matters when comparing products with end-of-hour timestamps.
 - **Coverage edges:** Some boundary hours are absent in the current production archive. For example, the January 2002 file begins at `2002-01-01 04:00` and contains 740 hours, rather than a complete 744-hour January. Users should check time coverage and completeness instead of assuming every day has 24 records.
 
 ### Missing and invalid values
 
-- Missing precipitation must **not** be interpreted as zero rainfall.
-- **On-disk `_FillValue` / `missing_value`: [TO CONFIRM]** using the published NetCDF encoding and attributes.
-- When the file correctly declares a CF missing-value marker, `xarray.open_dataset(..., mask_and_scale=True)` decodes it as missing data (normally `NaN` for floating-point variables).
-- Apply validity masks and inspect available-hour counts before computing totals or statistics.
+- **Fill value:** Missing or unavailable precipitation values are represented by IEEE **NaN** (`np.nan`) in the precipitation arrays.
+- **Interpretation:** `NaN` indicates missing data and must **not** be interpreted as zero precipitation. A value of `0.0` indicates zero precipitation, whereas `NaN` indicates an unavailable estimate.
+- **NetCDF encoding:** The missing-data convention is `NaN`; whether the final NetCDF files explicitly include an `_FillValue` attribute in addition to containing `NaN` values should be checked when finalizing CF metadata.
+- **Processing:** Python/xarray recognizes floating-point `NaN` values as missing. When aggregating precipitation, check the number of valid hourly records rather than allowing `sum()` to silently skip missing hours.
 
 ## 4. Development, quality control, and validation
 
@@ -126,7 +127,7 @@ A data descriptor manuscript is **planned for submission to *Earth System Scienc
 
 ## 6. Example: Read, subset, and aggregate with Python/xarray
 
-The following example opens one monthly NetCDF file, extracts a geographic subset, and calculates daily precipitation totals from the hourly `precip_scaled` variable. **The daily total assumes each record represents one hour of precipitation in mm h⁻¹.** Confirm the final timestamp labeling before interpreting calendar-day boundaries.
+The following example opens one monthly NetCDF file, extracts a geographic subset, and calculates daily precipitation totals from the hourly `precip_scaled` variable. **Each timestamp marks the start of a one-hour accumulation interval**, and precipitation is expressed in mm h⁻¹. Daily aggregation by the date of the timestamp therefore sums hourly intervals beginning at 00:00 through 23:00 for that calendar day (provided all 24 values exist). The time standard (UTC or otherwise) still needs to be verified. Missing values are `np.nan` and are excluded from valid-hour counts.
 
 Install the dependencies (with any suitable NetCDF backend):
 
@@ -157,7 +158,8 @@ with xr.open_dataset(filename, mask_and_scale=True, decode_times=True) as ds:
         lon=bounds_slice(hourly["lon"], -90.0, -85.0),
     )
 
-    # Sum 1-hour rates to daily totals (mm).
+    # Each timestamp marks the START of its 1-hour accumulation interval.
+    # Sum 1-hour rates to daily totals (mm) by interval start date.
     # Keep only grid-cell days with all 24 hourly values present.
     valid_hours = subset.resample(time="1D").count()
     daily_mm = subset.resample(time="1D").sum(min_count=1)
@@ -177,9 +179,10 @@ For multi-year or cloud-based analyses, use lazy loading/chunking (for example, 
 
 ## 7. Information to finalize before public release
 
-- [ ] Verify the published NetCDF CRS/datum, coordinate attributes, and CF metadata.
-- [ ] Specify UTC/calendar details and whether timestamps mark hour starts or ends.
-- [ ] Confirm the encoded `_FillValue`, `missing_value`, and any valid-data mask.
+- [ ] Verify the geographic coordinate attributes, geodetic datum, and CF metadata; no projected CRS is used.
+- [ ] Verify UTC/calendar details in the published files (hour-start labeling is confirmed).
+- [x] Document the missing-data fill value as `np.nan`.
+- [ ] Check whether the final NetCDF files explicitly set `_FillValue` and confirm CF metadata consistency.
 - [ ] Confirm archive structure, final variable names, compression, file sizes, and completeness.
 - [ ] Complete final quality checks and add verified validation summaries and limitations.
 - [ ] Approve the dataset license and document any source-data restrictions.
@@ -189,8 +192,3 @@ For multi-year or cloud-based analyses, use lazy loading/chunking (for example, 
 ---
 
 *This README is a pre-release draft for supervisory review and the AWS Open Data Sponsorship application. It should be publicly posted only after the metadata marked for confirmation have been reviewed, or with those limitations transparently retained.*
-
----
-
-*This README is a pre-release draft for supervisory review and the AWS Open Data Sponsorship application. It should be publicly posted only after the metadata marked for confirmation have been reviewed, or with those limitations transparently retained.*# ML4HP-US
-Dataset documentation and examples
