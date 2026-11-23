@@ -136,7 +136,7 @@ A data descriptor manuscript is **planned for submission to *Earth System Scienc
 
 ## 6. Example: Read, subset, and aggregate with Python/xarray
 
-The following example opens one monthly NetCDF file, extracts a geographic subset, and calculates daily precipitation totals from the hourly `precip_scaled` variable. **Each timestamp marks the start of a one-hour accumulation interval**, and precipitation is expressed in mm h⁻¹. Daily aggregation by the date of the timestamp therefore sums hourly intervals beginning at 00:00 through 23:00 for that calendar day (provided all 24 values exist). The time standard (UTC or otherwise) still needs to be verified. Missing values are `np.nan` and are excluded from valid-hour counts.
+The following example opens one monthly NetCDF file, extracts a geographic subset, and calculates daily precipitation totals from the hourly `precip_scaled` variable. **Each timestamp marks the start of a one-hour accumulation interval**, and precipitation is expressed in mm h⁻¹. Daily aggregation by the date of the timestamp therefore sums hourly intervals beginning at 00:00 through 23:00 for that calendar day (provided all 24 values exist). Missing values are `np.nan` and are excluded from valid-hour counts.
 
 Install the dependencies (with any suitable NetCDF backend):
 
